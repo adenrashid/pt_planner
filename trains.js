@@ -36,7 +36,7 @@ function sameLine(line) {
         let journey = line.stops.slice(lineIndexOrigin, lineIndexDestination+1);
         getStops(journey);
     } else {
-        let journey = line.stops.reverse().slice(line.stops.indexOf(origin), line.stops.indexOf(destination)+1);
+        let journey = line.stops.slice(lineIndexDestination, lineIndexOrigin+1).reverse();
         getStops(journey);
     }
     renderRoute(origin, destination, stops);
@@ -51,14 +51,14 @@ function multipleLines(line1, line2) {
     const line2IndexRichmond = line2.stops.indexOf('Richmond');
 
     if (originBeforeRichmond) {
-        var line1_journey = line1.stops.slice(line1.stops.indexOf(origin), line1.stops.indexOf('Richmond')+1)
+        var line1_journey = line1.stops.slice(line1IndexOrigin, line1IndexRichmond+1)
     } else {
-        var line1_journey = line1.stops.reverse().slice(line1.stops.indexOf(origin), line1.stops.indexOf('Richmond')+1)
+        var line1_journey = line1.stops.slice(line1IndexRichmond, line1IndexOrigin+1).reverse()
     }
     if (destinationBeforeRichmond) {
-        var line2_journey = line2.stops.slice(line2.stops.indexOf(destination), line2.stops.indexOf('Richmond')+1)
+        var line2_journey = line2.stops.slice(line2IndexDestination, line2IndexRichmond+1)
     } else {
-        var line2_journey = line2.stops.reverse().slice(line2.stops.indexOf(destination), line2.stops.indexOf('Richmond')+1)
+        var line2_journey = line2.stops.slice(line2.stops.indexOf(destination), line2.stops.indexOf('Richmond')+1).reverse()
     }
     multipleLineRoute(line1_journey, line2_journey);
 };
