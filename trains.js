@@ -27,11 +27,13 @@ function getRoute() {
 }
 
 function sameLine(line) {
-    const stops = Math.abs(line.stops.indexOf(origin) - line.stops.indexOf(destination));
-    const trainRunningForwards = line.stops.indexOf(origin) < line.stops.indexOf(destination);
+    const lineIndexOrigin = line.stops.indexOf(origin);
+    const lineIndexDestination = line.stops.indexOf(destination);
+    const stops = Math.abs(lineIndexOrigin - lineIndexDestination);
+    const trainRunningForwards = lineIndexOrigin < lineIndexDestination;
 
     if (trainRunningForwards) {
-        let journey = line.stops.slice(line.stops.indexOf(origin), line.stops.indexOf(destination)+1);
+        let journey = line.stops.slice(lineIndexOrigin, lineIndexDestination+1);
         getStops(journey);
     } else {
         let journey = line.stops.reverse().slice(line.stops.indexOf(origin), line.stops.indexOf(destination)+1);
@@ -41,8 +43,12 @@ function sameLine(line) {
 };
 
 function multipleLines(line1, line2) {
-    const originBeforeRichmond = line1.stops.indexOf(origin) < line1.stops.indexOf('Richmond');
-    const destinationBeforeRichmond = line2.stops.indexOf(destination) < line2.stops.indexOf('Richmond');
+    const line1IndexOrigin = line1.stops.indexOf(origin);
+    const line2IndexDestination = line2.stops.indexOf(destination);
+    const originBeforeRichmond = line1IndexOrigin < line1.stops.indexOf('Richmond');
+    const destinationBeforeRichmond = line2IndexDestination < line2.stops.indexOf('Richmond');
+    const line1IndexRichmond = line1.stops.indexOf('Richmond');
+    const line2IndexRichmond = line2.stops.indexOf('Richmond');
 
     if (originBeforeRichmond) {
         var line1_journey = line1.stops.slice(line1.stops.indexOf(origin), line1.stops.indexOf('Richmond')+1)
@@ -74,8 +80,9 @@ function getStops(journey) {
 
 function multipleLineRoute(line1_journey, line2_journey) {
     let final_journey = line1_journey.concat(line2_journey.reverse());
+    console.log(final_journey)
     let stops = final_journey.length - 2;
-    route = final_journey.join(' ---> ').replace("Richmond ---> Richmond", 'Richmond || Richmond');
+    route = final_journey.join(' ---> ').replace("Richmond ---> Richmond", 'Richmond \n\n|| Richmond');
     document.querySelector('.route').innerHTML = route;
     renderRoute(origin, destination, stops);
 }
